@@ -2,9 +2,10 @@ use bevy::{
     color::palettes::css,
     input::mouse::MouseMotion,
     prelude::*,
+    render::mesh::{Indices, Mesh, VertexAttributeValues},
     window::{CursorGrabMode, PrimaryWindow},
 };
-use bevy_rapier3d::prelude::*;
+use bevy_rapier2d::{na::Point2, prelude::*};
 
 fn main() {
     App::new()
@@ -70,7 +71,20 @@ fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    asset_server: Res<AssetServer>,
 ) {
+    let handle: Handle<Mesh> = asset_server.load("levels.gltf#Scene0");
+    commands.spawn((
+        SceneRoot(asset_server.load("levels.gltf#Scene0")),
+        RigidBody::Fixed,
+        Transform::default(),
+        Collider::from_bevy_mesh(
+            meshes.get(handle.id()).unwrap(),
+            &ComputedColliderShape::default(),
+        )
+        .unwrap(),
+    ));
+
     commands.spawn((
         Mesh3d(meshes.add(Cuboid::new(40.0, 1.0, 40.0))),
         MeshMaterial3d(materials.add(StandardMaterial::from_color(css::WHITE))),
