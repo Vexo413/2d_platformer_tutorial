@@ -6,16 +6,11 @@ fn main() {
         .add_plugins((DefaultPlugins, RapierPhysicsPlugin::<NoUserData>::default()))
         .add_systems(Startup, setup)
         .add_systems(Update, (manage_collisions, manage_position))
-        .insert_resource(AmbientLight {
-            brightness: 2000.0,
-            color: Color::WHITE,
-        })
         .insert_resource(PlayerPhysics {
-            speed: 1.0,
-            ground_friction: 0.9,
-            air_friction: 0.95,
-            jump_force: 75.0,
-            gravity: 2.0,
+            speed: 2.5,
+            friction: 0.9,
+            jump_force: 50.0,
+            gravity: 1.5,
         })
         .run();
 }
@@ -32,8 +27,7 @@ struct GroundSensor;
 #[derive(Resource)]
 struct PlayerPhysics {
     speed: f32,
-    ground_friction: f32,
-    air_friction: f32,
+    friction: f32,
     jump_force: f32,
     gravity: f32,
 }
@@ -50,16 +44,18 @@ fn setup(mut commands: Commands) {
         Transform::default(),
     ));
     commands.spawn((
-        Sprite::from_color(css::BLUE, Vec2::new(10.0, 0.25)),
-        RigidBody::Fixed,
-        Collider::cuboid(5.0, 0.125),
-        Transform::from_xyz(5.0, 0.625, 5.0),
-    ));
-    commands.spawn((
         Sprite::from_color(css::RED, Vec2::new(2.0, 2.0)),
         RigidBody::Fixed,
         Collider::cuboid(1.0, 1.0),
-        Transform::from_xyz(10.0, 1.5, -5.0),
+        Transform::from_xyz(10.0, 1.5, 0.0),
+    ));
+    commands.spawn((
+        Sprite::from_color(css::BLUE, Vec2::new(2.0, 2.0)),
+        Collider::cuboid(1.0, 1.0),
+        Sensor,
+        Transform::from_xyz(10.0, 10.0, 0.0),
+        ActiveEvents::COLLISION_EVENTS,
+        ActiveCollisionTypes::all(),
     ));
 
     commands
@@ -69,11 +65,6 @@ fn setup(mut commands: Commands) {
             Collider::cuboid(0.5, 0.5),
             Transform::from_xyz(0.0, 50.0, 0.0),
             KinematicCharacterController {
-                autostep: Some(CharacterAutostep {
-                    max_height: CharacterLength::Absolute(0.5),
-                    min_width: CharacterLength::Absolute(0.5),
-                    include_dynamic_bodies: true,
-                }),
                 ..Default::default()
             },
             Player {
@@ -127,9 +118,6 @@ fn manage_position(
     let (mut controller, mut player) = query.single_mut();
 
     let mut direction = Vec2::ZERO;
-    if keyboard.pressed(KeyCode::Space) && player.grounded {
-        player.velocity.y = player_physics.jump_force * time.delta_secs();
-    }
     if keyboard.pressed(KeyCode::KeyA) {
         direction.x = -1.0;
     }
@@ -139,10 +127,17 @@ fn manage_position(
 
     player.velocity += direction * player_physics.speed * time.delta_secs();
     if player.grounded {
-        player.velocity *= player_physics.ground_friction;
+        player.velocity *= player_physics.friction;
     } else {
-        player.velocity *= player_physics.air_friction;
+        player.velocity.x *= player_physics.friction;
     }
     player.velocity.y -= player_physics.gravity * time.delta_secs();
+
+    if keyboard.pressed(KeyCode::KeyW) && player.grounded {
+        player.velocity.y = player_physics.jump_force * time.delta_secs();
+    }
+
+    //player.velocity.y *= player_physics.air_friction;
+
     controller.translation = Some(player.velocity);
 }
