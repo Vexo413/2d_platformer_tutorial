@@ -310,6 +310,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_2d_platformer_tutorial"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_rapier2d",
+]
+
+[[package]]
 name = "bevy_a11y"
 version = "0.15.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -825,15 +833,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bevy_panorbit_camera"
-version = "0.23.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4e22224619230504b7a439ba05df41e4e364b848e1cf336c60bb9e44fd38c273"
-dependencies = [
- "bevy",
-]
-
-[[package]]
 name = "bevy_pbr"
 version = "0.15.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -893,16 +892,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "89fe0b0b919146939481a3a7c38864face2c6d0fd2c73ab3d430dc693ecd9b11"
 
 [[package]]
-name = "bevy_rapier3d"
+name = "bevy_rapier2d"
 version = "0.29.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85f3856331b3f75e900db0fd47c34d7e63dc7f736f455e9d0e6d775a24099c37"
+checksum = "9e5a44a053db18df1058d8c4d582962e66e982dc5c5c86e049d2fe5e2a332110"
 dependencies = [
  "bevy",
  "bitflags 2.9.0",
  "log",
  "nalgebra",
- "rapier3d",
+ "rapier2d",
 ]
 
 [[package]]
@@ -1143,16 +1142,6 @@ dependencies = [
  "bevy_math",
  "bevy_reflect",
  "derive_more",
-]
-
-[[package]]
-name = "bevy_tutorial"
-version = "0.1.0"
-dependencies = [
- "bevy",
- "bevy_gltf",
- "bevy_panorbit_camera",
- "bevy_rapier3d",
 ]
 
 [[package]]
@@ -2321,15 +2310,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "hash32"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "47d60b12902ba28e2730cd37e95b8c9223af2808df9e902d4df49588d1470606"
-dependencies = [
- "byteorder",
-]
-
-[[package]]
 name = "hashbrown"
 version = "0.14.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2349,16 +2329,6 @@ dependencies = [
  "allocator-api2",
  "equivalent",
  "foldhash",
-]
-
-[[package]]
-name = "heapless"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0bfb9eb618601c89945a70e254898da93b13be0388091d42117462b265bb3fad"
-dependencies = [
- "hash32",
- "stable_deref_trait",
 ]
 
 [[package]]
@@ -3269,10 +3239,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "parry3d"
+name = "parry2d"
 version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ecb572cea5c76b06bc744aaefdbb9e6ea9e5695f50f79c0227bddecd6ec925a4"
+checksum = "efd0ac62e76d6143e008a4988d795550d47aba40a50929d6b7b85e4230784403"
 dependencies = [
  "approx",
  "arrayvec",
@@ -3285,7 +3255,6 @@ dependencies = [
  "num-derive",
  "num-traits",
  "ordered-float",
- "rstar",
  "rustc-hash 2.1.1",
  "simba",
  "slab",
@@ -3528,10 +3497,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f60fcc7d6849342eff22c4350c8b9a989ee8ceabc4b481253e8946b9fe83d684"
 
 [[package]]
-name = "rapier3d"
+name = "rapier2d"
 version = "0.23.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "37d84644f385b81f065576058bc8f7e3d64e56a66f2f5fc40bfd917774659e12"
+checksum = "dd9ef3dbd7ab80f038f37a6952b00146a771ddde72244b0745ac43c2a4ad30c1"
 dependencies = [
  "approx",
  "arrayvec",
@@ -3544,7 +3513,7 @@ dependencies = [
  "num-derive",
  "num-traits",
  "ordered-float",
- "parry3d",
+ "parry2d",
  "profiling",
  "rustc-hash 2.1.1",
  "simba",
@@ -3701,17 +3670,6 @@ name = "roxmltree"
 version = "0.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6c20b6793b5c2fa6553b250154b78d6d0db37e72700ae35fad9387a46f487c97"
-
-[[package]]
-name = "rstar"
-version = "0.12.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "421400d13ccfd26dfa5858199c30a5d76f9c54e0dba7575273025b43c5175dbb"
-dependencies = [
- "heapless",
- "num-traits",
- "smallvec",
-]
 
 [[package]]
 name = "rustc-hash"
@@ -3941,12 +3899,6 @@ checksum = "eda41003dc44290527a59b13432d4a0379379fa074b70174882adfbdfd917844"
 dependencies = [
  "bitflags 2.9.0",
 ]
-
-[[package]]
-name = "stable_deref_trait"
-version = "1.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 
 [[package]]
 name = "stackfuture"
